@@ -1,24 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { ItemsContainer, Bar } from './styles';
+import SortInterface from '../../algorithms/sort/sortInterface';
+import SortCallback from '../../algorithms/sort/sortCallback';
 
 type SortProps = {
   items: Array<number>,
-  maxHeight: number
+  maxHeight: number,
+  sortMethod: SortInterface
 };
 
-const SortVisualizer: React.FC<SortProps> = ({ items, maxHeight }) => {
-  // eslint-disable-next-line no-unused-vars
+const SortVisualizer: React.FC<SortProps> = (props: SortProps) => {
+  const { items, maxHeight, sortMethod } = props;
+
   const [sortedItems, setSortedItems] = useState(items);
 
+  const onSort: SortCallback = (
+    firstIndex,
+    _firstValue,
+    secondIndex,
+    _secondValue,
+  ): void => {
+    const newSortedItems = [...sortedItems];
+    const tmp = newSortedItems[firstIndex];
+    newSortedItems[firstIndex] = newSortedItems[secondIndex];
+    newSortedItems[secondIndex] = tmp;
+
+    setSortedItems(newSortedItems);
+    console.log(newSortedItems);
+  };
+
+  useEffect(() => {
+    sortMethod(items, onSort);
+  }, []);
+
+  // useEffect(() => {
+  //   console.log(sortedItems);
+  // }, [sortedItems]);
+
   return (
-    <div className="flex flex-col flex-1">
-      <h1 className="bg-indigo-900">Teste</h1>
+    <ItemsContainer>
       {sortedItems.map((height) => (
-        <div
-          key={`teste_${height / maxHeight}`}
-          className=" bg-indigo-900 w-full h-full"
+        <Bar
+          key={uuidv4()}
+          height={`${(height / maxHeight) * 100}%`}
         />
       ))}
-    </div>
+    </ItemsContainer>
   );
 };
 
