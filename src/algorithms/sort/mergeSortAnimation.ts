@@ -16,25 +16,28 @@ const merge = (values: number[], l: number, r: number): number[] => {
 
   let i = 0;
   let j = 0;
-  let k = l;
+  let globalIndex = l;
 
   while (i < firstHalf.length && j < secondHalf.length) {
     if (firstHalf[i] <= secondHalf[j]) {
-      result[k] = firstHalf[i];
+      result[globalIndex] = firstHalf[i];
       i += 1;
     } else {
-      result[k] = secondHalf[j];
+      result[globalIndex] = secondHalf[j];
       j += 1;
     }
-    k += 1;
+    animations.push(getAnimation(result, [globalIndex, globalIndex]));
+    globalIndex += 1;
   }
 
-  for (i; i < firstHalf.length; i++, k++) {
-    result[k] = firstHalf[i];
+  for (i; i < firstHalf.length; i++, globalIndex++) {
+    animations.push(getAnimation(result, [globalIndex, globalIndex]));
+    result[globalIndex] = firstHalf[i];
   }
 
-  for (j; j < secondHalf.length; j++, k++) {
-    result[k] = secondHalf[j];
+  for (j; j < secondHalf.length; j++, globalIndex++) {
+    animations.push(getAnimation(result, [globalIndex, globalIndex]));
+    result[globalIndex] = secondHalf[j];
   }
 
   return result;
@@ -54,12 +57,14 @@ const mergeSort = (values: number[], l: number, r: number): number[] => {
   return copy;
 };
 
-// const getMergeSortAnimations: SortFunction = (values) => {
-//   mergeSort(values, 0, values.length);
+const getMergeSortAnimations: SortFunction = (values) => {
+  const sorted = mergeSort(values.map((v) => v.value), 0, values.length);
 
-//   return animations;
-// };
+  animations.push(getFinalAnimation(sorted));
 
-// export default getMergeSortAnimations;
+  return animations;
+};
 
-export default mergeSort;
+export default getMergeSortAnimations;
+
+// export default mergeSort;

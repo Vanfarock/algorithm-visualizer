@@ -4,7 +4,6 @@ import { ItemsContainer, Bar } from './styles';
 import SortFunction from '../../algorithms/sort/sortFunction';
 import Animation from '../../algorithms/sort/animation';
 import SortItem from '../../algorithms/sort/sortItem';
-import mergeSort from '../../algorithms/sort/mergeSort';
 
 type SortProps = {
   items: Array<SortItem>,
@@ -31,12 +30,7 @@ const SortVisualizer: React.FC<SortProps> = (props: SortProps) => {
 
   useEffect(() => {
     const animations = sortMethod(items);
-    // eslint-disable-next-line no-debugger
-    debugger;
-    const values = items.map((i) => i.value);
-    // eslint-disable-next-line no-console
-    console.log(mergeSort(values, 0, items.length));
-    // animateArray(animations);
+    animateArray(animations);
   }, []);
 
   return (
