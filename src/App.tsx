@@ -1,21 +1,28 @@
 import React, { FunctionComponent } from 'react';
-import insertionSort from './algorithms/sort/insertionSort';
+import insertionSort from './algorithms/sort/insertionSortAnimation';
+import bubbleSort from './algorithms/sort/bubbleSortAnimation';
 import SortVisualizer from './components/sortVisualizer';
+import generateRandomArray from './util/arrayGenerator';
+import SortItem from './algorithms/sort/sortItem';
+import ItemState from './algorithms/sort/itemState';
 
 const App: FunctionComponent = () => {
-  const maxHeight = 100;
+  const MAX_HEIGHT = 100;
+  const TOTAL_ITEMS = 15;
+  const DELAY = 1000;
 
-  // const items: number[] = [];
-  // for (let i = 0; i < 10; i += 1) {
-  //   items.push(Math.random() * maxHeight);
-  // }
-
-  const items: number[] = [7, 1, 3, 2, 9, 5, 1];
+  // const randomValues = generateRandomArray(0, MAX_HEIGHT, TOTAL_ITEMS);
+  const randomValues = [9, 8, 7, 6, 5, 4, 3, 2, 1];
+  const sortItems: SortItem[] = randomValues.map((value) => ({
+    value,
+    state: ItemState.Inactive,
+  }));
 
   return (
     <SortVisualizer
-      items={items}
-      maxHeight={maxHeight}
+      items={sortItems}
+      maxHeight={MAX_HEIGHT}
+      delay={DELAY}
       sortMethod={insertionSort}
     />
   );

@@ -1,49 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ItemsContainer, Bar } from './styles';
-import SortInterface from '../../algorithms/sort/sortInterface';
-import SortCallback from '../../algorithms/sort/sortCallback';
+import SortFunction from '../../algorithms/sort/sortFunction';
+import Animation from '../../algorithms/sort/animation';
+import SortItem from '../../algorithms/sort/sortItem';
+import mergeSort from '../../algorithms/sort/mergeSort';
 
 type SortProps = {
-  items: Array<number>,
+  items: Array<SortItem>,
   maxHeight: number,
-  sortMethod: SortInterface
+  delay: number,
+  sortMethod: SortFunction
 };
 
 const SortVisualizer: React.FC<SortProps> = (props: SortProps) => {
-  const { items, maxHeight, sortMethod } = props;
+  const {
+    items, maxHeight, delay, sortMethod,
+  } = props;
 
   const [sortedItems, setSortedItems] = useState(items);
 
-  const onSort: SortCallback = (
-    firstIndex,
-    _firstValue,
-    secondIndex,
-    _secondValue,
-  ): void => {
-    const newSortedItems = [...sortedItems];
-    const tmp = newSortedItems[firstIndex];
-    newSortedItems[firstIndex] = newSortedItems[secondIndex];
-    newSortedItems[secondIndex] = tmp;
-
-    setSortedItems(newSortedItems);
-    console.log(newSortedItems);
+  const animateArray = (animations: Animation[]): void => {
+    for (let i = 0; i < animations.length; i++) {
+      setTimeout(() => {
+        const { currentState } = animations[i];
+        setSortedItems(currentState);
+      }, delay * i);
+    }
   };
 
   useEffect(() => {
-    sortMethod(items, onSort);
+    const animations = sortMethod(items);
+    console.log(mergeSort(items.map((i) => i.value)));
+    // animateArray(animations);
   }, []);
-
-  // useEffect(() => {
-  //   console.log(sortedItems);
-  // }, [sortedItems]);
 
   return (
     <ItemsContainer>
-      {sortedItems.map((height) => (
+      {sortedItems.map(({ value, state }) => (
         <Bar
           key={uuidv4()}
-          height={`${(height / maxHeight) * 100}%`}
+          state={state}
+          height={`${(value / maxHeight) * 100}%`}
         />
       ))}
     </ItemsContainer>

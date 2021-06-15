@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import ItemState from '../../algorithms/sort/itemState';
 
 export const ItemsContainer = styled.div`
   display: flex;
@@ -19,12 +20,31 @@ export const ItemsContainer = styled.div`
 `;
 
 type BarProps = {
-  height: string
+  height: string,
+  state: ItemState,
+};
+
+const getBarColor = (state: ItemState): string => {
+  if (state === ItemState.Active) {
+    return 'blue';
+  } if (state === ItemState.Inactive) {
+    return 'red';
+  } if (state === ItemState.Sorted) {
+    return 'green';
+  }
+  return 'black';
 };
 
 export const Bar = styled.div<BarProps>`
   width: 100%;
   height: ${(props) => props.height};
   
-  background: red;
+  background: ${(props) => getBarColor(props.state)};
 `;
+
+export const Teste = styled.div.attrs<BarProps>((props) => ({
+  style: {
+    height: props.height,
+    background: getBarColor(props.state),
+  },
+}))`width: 100%;`;
