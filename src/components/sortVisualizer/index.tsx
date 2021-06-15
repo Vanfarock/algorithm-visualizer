@@ -31,7 +31,11 @@ const SortVisualizer: React.FC<SortProps> = (props: SortProps) => {
 
   useEffect(() => {
     const animations = sortMethod(items);
-    console.log(mergeSort(items.map((i) => i.value)));
+    // eslint-disable-next-line no-debugger
+    debugger;
+    const values = items.map((i) => i.value);
+    // eslint-disable-next-line no-console
+    console.log(mergeSort(values, 0, items.length));
     // animateArray(animations);
   }, []);
 

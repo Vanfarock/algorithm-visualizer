@@ -8,7 +8,7 @@ import ItemState from './algorithms/sort/itemState';
 
 const App: FunctionComponent = () => {
   const MAX_HEIGHT = 100;
-  const TOTAL_ITEMS = 15;
+  const TOTAL_ITEMS = 100;
   const DELAY = 1000;
 
   // const randomValues = generateRandomArray(0, MAX_HEIGHT, TOTAL_ITEMS);
@@ -23,7 +23,7 @@ const App: FunctionComponent = () => {
       items={sortItems}
       maxHeight={MAX_HEIGHT}
       delay={DELAY}
-      sortMethod={insertionSort}
+      sortMethod={bubbleSort}
     />
   );
 };
